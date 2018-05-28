@@ -1,9 +1,6 @@
 package com.udacity.gradle.builitbigger;
 
-import android.support.v4.util.Pair;
 import android.test.AndroidTestCase;
-
-import com.eliassilva.jokeprovider.JokeProvider;
 import com.udacity.gradle.builditbigger.EndpointsAsyncTask;
 
 import org.junit.Test;
@@ -17,9 +14,8 @@ public class AsyncTaskTest extends AndroidTestCase{
 
     @Test
     public void test() {
-        JokeProvider jokeProvider = new JokeProvider();
         EndpointsAsyncTask endpointsAsyncTask = new EndpointsAsyncTask();
-        endpointsAsyncTask.execute(new Pair(getContext(), jokeProvider.getJoke()));
+        endpointsAsyncTask.execute(getContext());
         try {
             assertNotNull(endpointsAsyncTask.get());
         } catch (InterruptedException e) {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.util.Pair;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.eliassilva.jokedisplayer.JokeDisplay;
@@ -18,12 +19,12 @@ import java.io.IOException;
 /**
  * Created by Elias on 23/05/2018.
  */
-public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
+public class EndpointsAsyncTask extends AsyncTask<Context, Void, String> {
     private static MyApi myApiService = null;
     private Context context;
 
     @Override
-    protected String doInBackground(Pair<Context, String>... params) {
+    protected String doInBackground(Context... contexts) {
         if(myApiService == null) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
@@ -42,20 +43,22 @@ public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, S
             myApiService = builder.build();
         }
 
-        context = params[0].first;
-        String name = params[0].second;
+        context = contexts[0];
 
         try {
-            return myApiService.getJoke(name).execute().getData();
+            return myApiService.getJoke().execute().getData();
         } catch (IOException e) {
-            return e.getMessage();
+            Log.e("Jokes", e.getMessage(), e);
+            return null;
         }
     }
 
     @Override
     protected void onPostExecute(String result) {
-        Intent intent = new Intent(context, JokeDisplay.class);
-        intent.putExtra(JokeDisplay.JOKE_EXTRA, result);
-        context.startActivity(intent);
+        if (result != null) {
+            Intent intent = new Intent(context, JokeDisplay.class);
+            intent.putExtra(JokeDisplay.JOKE_EXTRA, result);
+            context.startActivity(intent);
+        }
     }
 }

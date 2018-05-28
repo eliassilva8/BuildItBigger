@@ -2,6 +2,7 @@ package com.eliassilva.jokedisplayer;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.TextView;
 
 public class JokeDisplay extends AppCompatActivity {
@@ -14,7 +15,9 @@ public class JokeDisplay extends AppCompatActivity {
 
         String joke = getIntent().getStringExtra(JOKE_EXTRA);
 
-        TextView jokeDisplay = findViewById(R.id.joke_display_tv);
-        jokeDisplay.setText(joke);
+        if (!TextUtils.isEmpty(joke)) {
+            TextView jokeDisplay = findViewById(R.id.joke_display_tv);
+            jokeDisplay.setText(joke);
+        }
     }
 }
