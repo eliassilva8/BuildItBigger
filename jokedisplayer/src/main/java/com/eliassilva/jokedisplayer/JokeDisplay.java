@@ -7,17 +7,20 @@ import android.widget.TextView;
 
 public class JokeDisplay extends AppCompatActivity {
     public static final String JOKE_EXTRA = "joke";
+    String mJoke = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_joke_display);
 
-        String joke = getIntent().getStringExtra(JOKE_EXTRA);
+        if (getIntent().hasExtra(JOKE_EXTRA)) {
+            mJoke = getIntent().getStringExtra(JOKE_EXTRA);
+        }
 
-        if (!TextUtils.isEmpty(joke)) {
+        if (!TextUtils.isEmpty(mJoke)) {
             TextView jokeDisplay = findViewById(R.id.joke_display_tv);
-            jokeDisplay.setText(joke);
+            jokeDisplay.setText(mJoke);
         }
     }
 }
